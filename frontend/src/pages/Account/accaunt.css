@@ -1,0 +1,112 @@
+* {
+    margin: 0;
+}
+
+header {
+    background-color: #233627;
+    width: 100%;
+    height: 60px;
+    margin-bottom: 30px;
+}
+
+.goBack{
+    position: relative;
+    left: 11px;
+    top: 10px;   
+}
+
+.userDiscr {
+    position: relative;
+    top: 20px;
+    text-align: center;
+    font-size: 25px;
+    color: whitesmoke;
+}
+
+.userDiscr p{
+    margin-bottom: 10px;
+}
+
+.cont-lvl {
+    display: flex;
+    justify-content: center;
+}
+
+.bg-lvl {
+    border-radius: 30px;
+    width: 140px;
+    background-color: #0F491B;
+    margin-top: 25px;
+    text-align: center;
+}
+
+.lvl {
+    border-radius: 30px;
+    background-color: #156B26;
+    width: 90px;
+    height: 23px;
+    font-size: 20px;
+    color: whitesmoke;
+}
+
+.achievement {
+    position: relative;
+    top: 20px;
+    left: 5px;
+    height: 30px;
+}
+
+.cont-info {
+    display: flex;
+    justify-content: center;
+}
+
+.bg-info {
+    border-radius: 15px;
+    margin-top: 140px;
+    background-color: #0F491B;
+    width: 70%;
+    height: 260px;
+}
+
+.bg-info p {
+    position: relative;
+    bottom: 35px;
+    color: whitesmoke;
+    font-size: 21px;
+}
+
+input {
+    width: 220px;
+    margin-left: 20px;
+    border: none;
+    padding: 7px;
+    margin-bottom: 20px;
+    background-color: transparent; /* Зробити прозорим */
+    border-bottom: 2px solid white; /* Додати підкреслення */
+}
+
+input:focus-visible {
+    outline: none;
+
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+}
+
+.cont-foot {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 175px;
+    background-color: #233627;
+    border-radius: 20px;
+    width: 84%;
+    height: 60px;
+}
+
+.cont-foot img {
+    margin: 0 20px;
+}
