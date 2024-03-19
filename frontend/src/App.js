@@ -1,8 +1,12 @@
-import Home from './pages/Home/home';
-import React from 'react';
 import { BrowserRouter as Router, Route, Routes} from "react-router-dom";
+import Home from './pages/Home/home';
+import Signup from './pages/Signup/signup';
+import Login from './pages/Login/login';
+import React from 'react';
 import Error from './pages/404/404'
 import Accaunt from './pages/Account/accaunt';
+import Activity from './pages/Activity/activity';
+import Settings from './pages/Settings/settings';
 
 /*
 import React, {useState, useEffect} from 'react'
@@ -39,9 +43,13 @@ class App extends React.Component {
     <div>
       <Router>
         <Routes>
+          <Route exact path="/sign-up" Component={Signup}/>
+          <Route exact path="/login" Component={Login}/>
           <Route exact path="/" Component={Home}/>
+          <Route exact path="/activity" Component={Activity}/>
           <Route path="*" Component={Error}/>
           <Route path='/accaunt-settings' Component={Accaunt}/>
+          <Route path='/settings' Component={Settings}/>
         </Routes>
       </Router>
     </div>

@@ -4,6 +4,7 @@ import './accaunt.css';
 export class Accaunt extends Component {
   render() {
     return (
+      <>
         <body>
       <header>
        <a href="/" className='text'><img src='./img/mingcute_right-line.png' alt='' className='goBack'/></a>
@@ -40,6 +41,7 @@ export class Accaunt extends Component {
         </div>
       </footer>
         </body>
+        </>
     )
   }
 }
