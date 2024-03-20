@@ -7,6 +7,7 @@ import Error from './pages/404/404'
 import Accaunt from './pages/Account/accaunt';
 import Activity from './pages/Activity/activity';
 import Settings from './pages/Settings/settings';
+import Share from "./pages/Share/share";
 
 /*
 import React, {useState, useEffect} from 'react'
@@ -50,6 +51,7 @@ class App extends React.Component {
           <Route path="*" Component={Error}/>
           <Route path='/accaunt-settings' Component={Accaunt}/>
           <Route path='/settings' Component={Settings}/>
+          <Route path='/share' Component={Share}/>
         </Routes>
       </Router>
     </div>
