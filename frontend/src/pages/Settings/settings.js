@@ -18,12 +18,12 @@ export class Settings extends Component {
       <div className='bg-lvl'>
         <div className='lvl'>69lvl</div>
       </div>
-      <img src='./img/achievement.png' alt='' className='achievement' />
+      <a href="/achievement"><img src='./img/achievement.png' alt='' className='achievement' /> </a>
       </div>
       <div className='bgelem'>
       <div className='contelem'>
 
-    <a href="/bell" className='text'> <div className='rectangle1'>
+    <a href="/notifications" className='text'> <div className='rectangle1'>
         <img src='./img/mi_notification.png' alt='' className='icons'/>
         <div className='textelem'>Notifications</div>
         </div> </a>
@@ -51,7 +51,7 @@ export class Settings extends Component {
 </div>
 
 <footer>
-        <div className='foot'>
+        <div className='foot13'>
             <a href="/" className='text'><img src='./img/Home.png' alt=''/></a>
             <a href="/share" className='text'><img src='./img/Share.png' alt=''/></a>
             <a href="/community" className='text'><img src='./img/Community.png' alt=''/></a>

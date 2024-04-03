@@ -47,9 +47,9 @@ header {
 
 .achievement {
     position: relative;
-    top: 20px;
+    top: 16px;
     left: 5px;
-    height: 30px;
+    height: 40px;
 }
 
 .cont-info {

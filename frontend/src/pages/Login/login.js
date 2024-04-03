@@ -4,6 +4,7 @@ import './login.css';
 export class Login extends Component {
     render() {
       return (
+        <>
         <div className="container">
     <div className="header-bar"></div>
     <div className="navigation">
@@ -27,11 +28,12 @@ export class Login extends Component {
         <input type="checkbox" class="remember-checkbox" />
         <span className="remember-label">Remember me</span>
       </label>
-      <a className="forgot-password">Forgot password?</a>
+      <a href="/forgot-password" className="forgot-password">Forgot password?</a>
     </div>
       <button type="submit" className="btn-login">Log in</button>
     </div>
   </div>
+  </>
   );
     }
 }

@@ -7,7 +7,10 @@ import Error from './pages/404/404'
 import Accaunt from './pages/Account/accaunt';
 import Activity from './pages/Activity/activity';
 import Settings from './pages/Settings/settings';
+import Achievement from "./pages/Achievement/achievement";
+import Community from "./pages/Community/community";
 import Share from "./pages/Share/share";
+import Notifications from "./pages/Notifications/notifications";
 
 /*
 import React, {useState, useEffect} from 'react'
@@ -51,7 +54,10 @@ class App extends React.Component {
           <Route path="*" Component={Error}/>
           <Route path='/accaunt-settings' Component={Accaunt}/>
           <Route path='/settings' Component={Settings}/>
+          <Route path='/achievement' Component={Achievement}/>
+          <Route path='/community' Component={Community}/>
           <Route path='/share' Component={Share}/>
+          <Route path="/notifications" Component={Notifications}/>
         </Routes>
       </Router>
     </div>

@@ -19,7 +19,7 @@ export class Accaunt extends Component {
       <div className='bg-lvl'>
         <div className='lvl'>69lvl</div>
       </div>
-      <img src='./img/achievement.png' alt='' className='achievement' />
+       <a href="/achievement"><img src='./img/achievement.png' alt='' className='achievement' /> </a>
       </div>
 
       <div className='cont-info'>
