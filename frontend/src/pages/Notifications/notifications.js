@@ -9,7 +9,7 @@ export class Notifications extends Component {
 
       <header>
         <a href="/" className='text'><img src='./img/mingcute_right-line.png' alt='' className='profile-settings'/></a>
-        <a className='text'><img src='./img/mi_notification.png' alt='' className='settings'/></a>
+        <img src='./img/mi_notification.png' alt='' className='settings'/>
       </header>
 
       <div className='userDiscr'>
