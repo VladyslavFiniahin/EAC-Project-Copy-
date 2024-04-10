@@ -19,7 +19,7 @@ export class Home extends Component {
       <div className='bg-of-elem'>
       <div className='cont-of-elem'>
 
-      <a href="/battery" className='text'> <div className='section'>
+      <a href="/elecwaste" className='text'> <div className='section'>
          <img src='./img/Battery.png' alt='' className='icons'/>
           <div className='textelem'>Electronic Waste</div>
         </div> </a>

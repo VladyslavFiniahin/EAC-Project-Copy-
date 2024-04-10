@@ -11,6 +11,7 @@ import Achievement from "./pages/Achievement/achievement";
 import Community from "./pages/Community/community";
 import Share from "./pages/Share/share";
 import Notifications from "./pages/Notifications/notifications";
+import ElecWaste from "./pages/ElecWaste/elecwaste";
 
 /*
 import React, {useState, useEffect} from 'react'
@@ -58,6 +59,7 @@ class App extends React.Component {
           <Route path='/community' Component={Community}/>
           <Route path='/share' Component={Share}/>
           <Route path="/notifications" Component={Notifications}/>
+          <Route path="/elecwaste" Component={ElecWaste}/>
         </Routes>
       </Router>
     </div>
