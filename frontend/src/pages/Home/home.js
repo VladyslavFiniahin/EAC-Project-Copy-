@@ -5,7 +5,6 @@ export class Home extends Component {
   render() {
     return (
       <>
-      <body>
 
       <header>
         <a href="/accaunt-settings" className='text'><img src='./img/UserPhotoS.png' alt='' className='profile-settings'/></a>
@@ -54,10 +53,6 @@ export class Home extends Component {
             <a href="/activity" className='text'><img src='./img/Activity.png' alt=''/></a>
         </div>
       </footer>
-
-
-
-</body>
 </>
     )
   }

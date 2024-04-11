@@ -55,3 +55,34 @@ app.get('/api/users', async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 });
+
+app.post('/api/login', async (req, res) => {
+    const { usernameOrEmail, password } = req.body;
+
+    try {
+        let dbData = [];
+        if (await fs.access(dbFilePath).then(() => true).catch(() => false)) {
+            dbData = JSON.parse(await fs.readFile(dbFilePath));
+        }
+        
+        const user = dbData.find(user => 
+            (user.username === usernameOrEmail || user.email === usernameOrEmail)
+            && user.password === password
+        );
+
+        if (!user) {
+            return res.status(400).json({ error: "Invalid username or password" });
+        }
+
+        res.json({
+            message: "Login successful",
+            user: {
+                username: user.username,
+                email: user.email
+            }
+        });
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
