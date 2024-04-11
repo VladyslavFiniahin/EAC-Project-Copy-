@@ -102,7 +102,7 @@ export class ElecWaste extends Component {
   </div> 
 
       <footer>
-        <div className='fooot'>
+        <div className='foootq3y6'>
             <a href="/" className='text'><img src='./img/Home.png' alt=''/></a>
             <a href="/share" className='text'><img src='./img/Share.png' alt=''/></a>
             <a href="/community" className='text'><img src='./img/Community.png' alt=''/></a>

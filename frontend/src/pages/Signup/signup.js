@@ -47,7 +47,7 @@ render() {
     const { name, email, password } = this.state;
 
     return (
-            <div className="container">
+            <div className="container65">
                 <div className="header-banner"></div>
                 <div className="main-content">
                     <a href='/login' className='dec'><div className="login-title">Log In</div></a>

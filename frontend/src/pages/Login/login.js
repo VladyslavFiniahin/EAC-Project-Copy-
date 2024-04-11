@@ -5,7 +5,7 @@ export class Login extends Component {
     render() {
       return (
         <>
-        <div className="container">
+        <div className="container65">
     <div className="header-bar"></div>
     <div className="navigation">
       <div  className='login-options'>
