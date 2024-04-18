@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import './settings.css';
 
 export class Settings extends Component {
+  goBack = () => {
+    window.history.back();
+  };
   render() {
     return (
 <>
 <body>
 <header>
-<a href="/" className='text'><img src='./img/mingcute_right-line.png' alt='' className='goBack'/></a>
+<img src='./img/mingcute_right-line.png' alt='' className='goBack'onClick={this.goBack} />
 </header>
 <div className='userDiscr'>
         <img src='./img/UserPhotoB.png' alt='1' className='userPhoto' />

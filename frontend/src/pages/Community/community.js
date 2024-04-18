@@ -4,57 +4,53 @@ import './community.css'
 export class Community extends Component {
   render() {
     return (
+      <>
       <body>
         <header>
         <a href="/accaunt-settings" className='text'><img src='./img/UserPhotoS.png' alt='' className='profile-settings'/></a>
         <a href="/settings" className='text'><img src='./img/Menu.png' alt='' className='settings'/></a>
       </header>
 
-      <div className="profile">
-        <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/c8c47dbd7bdfaf326b2ff276f7e39141b26b2f590a737aa5fbec25de138ae0f0?apiKey=2d7949b51e034cf2aa5c87b52f192149&" alt="Чухан's avatar" className="avatar" />
-        <div className="profile-info">
-          <h2 className="profile-name">Чухан</h2>
-          <div className="profile-divider"></div>
-          <div className="profile-emissions">
-            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/d4d372e612f5af9371a98d956c24b2c3e235fc586ba1e6beb440a2f257326d37?apiKey=2d7949b51e034cf2aa5c87b52f192149&" alt="" className="icon" />
-            <p className="profile-emissions-text">
-              Чухан's average emissions are reduced by <span className='percents'>36%</span>
-            </p>
-          </div>
-        </div>
-      </div>
-      
-      <div className="profile-2">
-        <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/c8c47dbd7bdfaf326b2ff276f7e39141b26b2f590a737aa5fbec25de138ae0f0?apiKey=2d7949b51e034cf2aa5c87b52f192149&" alt="Чухан's avatar" className="avatar" />
-        <div className="profile-info">
-          <h2 className="profile-name">Чуркан</h2>
-          <div className="profile-divider"></div>
-          <div className="profile-emissions">
-            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/d4d372e612f5af9371a98d956c24b2c3e235fc586ba1e6beb440a2f257326d37?apiKey=2d7949b51e034cf2aa5c87b52f192149&" alt="" className="icon" />
-            <p className="profile-emissions-text">
-              Чуркан's average emissions are reduced by <span className='percents'>36%</span>
-            </p>
-          </div>
+      <div className='bg-commu'>
+        <div className='cont-commu'>
+            <div className='fstr1'>Make new <br/>friends</div>
+            <div className='fstr2'>By adding a new friends to your list, you 
+            <br/>can view their activity during the day</div>
         </div>
       </div>
 
-      <div className="profile-3">
-        <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/c8c47dbd7bdfaf326b2ff276f7e39141b26b2f590a737aa5fbec25de138ae0f0?apiKey=2d7949b51e034cf2aa5c87b52f192149&" alt="Чухан's avatar" className="avatar" />
-        <div className="profile-info">
-          <h2 className="profile-name">Chyrka</h2>
-          <div className="profile-divider"></div>
-          <div className="profile-emissions-3">
-            <img src="./img/ic_outline-close.png" alt="" className="icon" />
-            <p className="profile-emissions-text">
-            Chyrka have not been active this day
-            </p>
+      <div className='bg-search'>
+        <div className='cont-search'>
+            <input className='inp-search' type="text"  placeholder="Enter username"/>
+            <img src='./img/search.png' alt='' className='search12'/>
+            <div className='box-of-icon'></div>
+        </div>
+      </div>
+
+      <div className='bg-friends'>
+        <div className='cont-friends'>
+          <div className='list'>Your list of friends:</div>
+          <p>Friend 1</p>
+          <div className='bgoflist'>
+            <img src='./img/User35x35.png' alt='' className='usr1'/>
+            <div className='contoflist'><div className='tupo'>(Username) average emissions <br/> are reduced by <span>36%</span></div> </div>
+          </div>
+          <p>Friend 2</p>
+          <div className='bgoflist'>
+            <img src='./img/User35x35.png' alt='' className='usr1'/>
+            <div className='contoflist'><div className='tupo'>(Username) average emissions <br/> are reduced by <span>36%</span></div> </div>
+          </div>
+          <p>Friend 3</p>
+          <div className='bgoflist'>
+            <img src='./img/User35x35.png' alt='' className='usr1'/>
+            <div className='contoflist'><div className='tupo'>(Username) have not been <br/> active this day</div> </div>
           </div>
         </div>
       </div>
 
       
       <footer>
-        <div className='footer'>
+        <div className='footer77'>
             <a href="/" className='text'><img src='./img/Home.png' alt=''/></a>
             <a href="/share" className='text'><img src='./img/Share.png' alt=''/></a>
             <a href="/community" className='text'><img src='./img/Community.png' alt=''/></a>
@@ -62,6 +58,7 @@ export class Community extends Component {
         </div>
       </footer>
       </body>
+      </>
     )
   }
 }
