@@ -45,7 +45,7 @@ export class Achievement extends Component {
 
       <footer>
         <div className='fot-ach'>
-            <a href="/" className='text'><img src='./img/Home.png' alt=''/></a>
+            <a href="/home" className='text'><img src='./img/Home.png' alt=''/></a>
             <a href="/share" className='text'><img src='./img/Share.png' alt=''/></a>
             <a href="/community" className='text'><img src='./img/Community.png' alt=''/></a>
             <a href="/activity" className='text'><img src='./img/Activity.png' alt=''/></a>

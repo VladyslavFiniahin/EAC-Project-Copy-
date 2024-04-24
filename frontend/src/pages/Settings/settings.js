@@ -2,19 +2,35 @@ import React, { Component } from 'react';
 import './settings.css';
 
 export class Settings extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: ''
+    };
+  }
+
+  componentDidMount() {
+    const username = localStorage.getItem('loggedInUsername');
+    this.setState({ username });
+  }
+
   goBack = () => {
     window.history.back();
+  };
+  handleLogout = () => {
+    localStorage.removeItem('loggedInUsername');
+    window.location.href = '/';
   };
   render() {
     return (
 <>
-<body>
+
 <header>
 <img src='./img/mingcute_right-line.png' alt='' className='goBack'onClick={this.goBack} />
 </header>
 <div className='userDiscr'>
         <img src='./img/UserPhotoB.png' alt='1' className='userPhoto' />
-        <p>Username</p>
+        <p>{this.state.username}</p>
       </div>
 
       <div className='cont-lvl'>
@@ -41,12 +57,12 @@ export class Settings extends Component {
           <div className='textelem'>Privacy</div>
         </div> </a>
 
-        <a href="/privacy" className='text'>   <div className='rectangle2'>
+        <a href="/language" className='text'>   <div className='rectangle2'>
           <img src='./img/Group.png' alt='' className='icons'/>
           <div className='textelem'>Language</div>
         </div> </a>
 
-        <a href="/logout" className='text'>   <div className='rectangle2'>
+        <a href="/" className='text' onClick={this.handleLogout}>   <div className='rectangle2'>
           <img src='./img/Logout.png' alt='' className='icons'/>
           <div className='textelem'>Log Out</div>
         </div> </a>
@@ -55,15 +71,12 @@ export class Settings extends Component {
 
 <footer>
         <div className='foot13'>
-            <a href="/" className='text'><img src='./img/Home.png' alt=''/></a>
+            <a href="/home" className='text'><img src='./img/Home.png' alt=''/></a>
             <a href="/share" className='text'><img src='./img/Share.png' alt=''/></a>
             <a href="/community" className='text'><img src='./img/Community.png' alt=''/></a>
             <a href="/activity" className='text'><img src='./img/Activity.png' alt=''/></a>
         </div>
       </footer>
-
-</body>
-
 
 </>
     

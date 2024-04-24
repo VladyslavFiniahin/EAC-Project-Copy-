@@ -2,13 +2,16 @@ import React, { Component } from 'react'
 import './notifications.css';
 
 export class Notifications extends Component {
+  goBack = () => {
+    window.history.back();
+  };
   render() {
     return (
       <>
       <body>
 
       <header>
-        <a href="/" className='text'><img src='./img/mingcute_right-line.png' alt='' className='profile-settings'/></a>
+      <img src='./img/mingcute_right-line.png' alt='' className='goBack'onClick={this.goBack} />
         <img src='./img/mi_notification.png' alt='' className='settings'/>
       </header>
 
@@ -43,7 +46,7 @@ export class Notifications extends Component {
 
 <footer>
         <div className='foot467'>
-            <a href="/" className='text'><img src='./img/Home.png' alt=''/></a>
+            <a href="/home" className='text'><img src='./img/Home.png' alt=''/></a>
             <a href="/share" className='text'><img src='./img/Share.png' alt=''/></a>
             <a href="/community" className='text'><img src='./img/Community.png' alt=''/></a>
             <a href="/activity" className='text'><img src='./img/Activity.png' alt=''/></a>

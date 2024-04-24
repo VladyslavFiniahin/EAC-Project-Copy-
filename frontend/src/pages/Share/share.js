@@ -38,7 +38,7 @@ export class Share extends Component {
 
         <footer>
         <div className='footxui'>
-            <a href="/" className='text1'><img src='./img/Home.png' alt=''/></a>
+            <a href="/home" className='text1'><img src='./img/Home.png' alt=''/></a>
             <a href="/share" className='text2'><img src='./img/Share.png' alt=''/></a>
             <a href="/community" className='text3'><img src='./img/Community.png' alt=''/></a>
             <a href="/activity" className='text4'><img src='./img/Activity.png' alt=''/></a>

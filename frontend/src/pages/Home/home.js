@@ -23,31 +23,31 @@ export class Home extends Component {
           <div className='textelem'>Electronic Waste</div>
         </div> </a>
 
-      <a href="/waste-sorting" className='text'> <div className='section'>
+      <a href="/organicwaste" className='text'> <div className='section'>
           <img src='./img/Wastesorting.png' alt='' className='icons'/>
           <div className='textelem'>Organic Waste</div>
         </div> </a>
 
-      <a href="/bottle-sorting" className='text'>   <div className='section'>
+      <a href="/plastwaste" className='text'>   <div className='section'>
           <img src='./img/Bottle.png' alt='' className='icons'/>
           <div className='textelem'>Plastics</div>
         </div> </a>
 
-      <a href="/waste" className='text'>   <div className='section'>
+      <a href="/solidwaste" className='text'>   <div className='section'>
           <img src='./img/Waste.png' alt='' className='icons'/>
           <div className='textelem'>Solid Waste</div>
         </div> </a>
 
-      <a href="/recycle" className='text'>   <div className='section'>
-          <img src='./img/Recycle.png' alt='' className='icons'/>
-          <div className='textelem'>Recyclable Waste</div>
+      <a href="/glasswaste" className='text'>   <div className='section'>
+          <img src='./img/BrokenBottle.png' alt='' className='icons'/>
+          <div className='textelem'>Glass Waste</div>
         </div> </a>
       </div>
       </div>
 
       <footer>
         <div className='contfoot'>
-            <a href="/" className='text'><img src='./img/Home.png' alt=''/></a>
+            <a href="/home" className='text'><img src='./img/Home.png' alt=''/></a>
             <a href="/share" className='text'><img src='./img/Share.png' alt=''/></a>
             <a href="/community" className='text'><img src='./img/Community.png' alt=''/></a>
             <a href="/activity" className='text'><img src='./img/Activity.png' alt=''/></a>

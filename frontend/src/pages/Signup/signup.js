@@ -50,7 +50,7 @@ render() {
             <div className="container65">
                 <div className="header-banner"></div>
                 <div className="main-content">
-                    <a href='/login' className='dec'><div className="login-title">Log In</div></a>
+                    <a href='/' className='dec'><div className="login-title">Log In</div></a>
                     <div className='signup-option'>
                         <div className="sign-up-title">Sign Up</div>
                         <div className='signup-underline'></div>
