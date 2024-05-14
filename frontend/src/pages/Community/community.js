@@ -19,18 +19,19 @@ class Community extends Component {
     const { username } = this.state;
     try {
       const response = await fetch(`/api/users?username=${username}`);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const userData = await response.json();
-      this.setState({ userData });
+    
+      const users = await response.json();
+
+      const filteredUser = users.find(user => user.username === username);
+
+      this.setState({ userData: filteredUser });
     } catch (error) {
       console.error('Error:', error);
     }
   };
 
   render() {
-  const { userData } = this.state;
+    const { userData } = this.state;
     return (
       <>
         <header>
@@ -49,7 +50,7 @@ class Community extends Component {
         <div className='bg-search'>
           <div className='cont-search'>
               <form onSubmit={this.handleSubmit}>
-                <input className='inp-search' type="text" placeholder="Enter username" onChange={this.handleChange} />
+                <input className='inp-search' type="text" id='3' placeholder="Enter username" onChange={this.handleChange} />
                 <button type="submit" className='btac'><img src='./img/search.png' alt='' className='search12'/></button>
               </form>
           </div>
@@ -57,15 +58,18 @@ class Community extends Component {
 
         <div className='bg-friends'>
           <div className='cont-friends'>
-            <div className='list'>Your list of friends:</div>
-            {userData && userData.map(user => (
-              <div key={user.username}>
+            <div className='list'>Your searched user:</div>
+            {userData && (
+              <div key={userData.username}>
                 <div className='bgoflist'>
                   <img src='./img/User35x35.png' alt='' className='usr1'/>
-                  <div className='contoflist'><div className='tupo'>{user.username} average emissions <br/> are reduced by <span>36%</span></div> </div>
+                  <div className='contoflist'>
+                    <div className='tupo'>{userData.username} average emissions <br/> are reduced by <span>0%</span></div>
+                      <div className='add'>+</div>
+                  </div>
                 </div>
               </div>
-            ))}
+            )}
           </div>
         </div>
 
@@ -79,7 +83,7 @@ class Community extends Component {
         </footer>
       </>
     );
- }
+  }
 }
 
 export default Community;
