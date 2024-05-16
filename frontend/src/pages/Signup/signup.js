@@ -5,7 +5,7 @@ class Signup extends Component {
   constructor(props) {
     super(props);
       this.state = {
-        name: '',
+        username: '',
         email: '',
         password: ''
       };
@@ -18,14 +18,14 @@ handleChange = (event) => {
 handleSubmit = async (event) => {
     event.preventDefault();
 
-    const { name, email, password } = this.state;
+    const { username, email, password } = this.state;
 
   try {
     const response = await fetch('/api/create_user', {
       method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'username': name,
+            'username': username,
             'email': email,
             'password': password
         }
@@ -33,7 +33,7 @@ handleSubmit = async (event) => {
 
   if (response.ok) {
     alert('User registered successfully!');
-      this.setState({ name: '', email: '', password: '' });
+      this.setState({ username: '', email: '', password: '' });
     } else {
         alert('Registration failed. Please try again.');
 }
@@ -44,7 +44,7 @@ handleSubmit = async (event) => {
 }
 
 render() {
-    const { name, email, password } = this.state;
+    const { username, email, password } = this.state;
 
     return (
             <div className="container65">
@@ -60,7 +60,7 @@ render() {
                     <form onSubmit={this.handleSubmit}>
 
                             <div className="name-section">
-                                <input className='input-name' type="text" name="name" value={name} onChange={this.handleChange} placeholder="Name" required />
+                                <input className='input-name' type="text" name="username" value={username} onChange={this.handleChange} placeholder="Username" required />
                             </div>
 
                         <div className="email-section">

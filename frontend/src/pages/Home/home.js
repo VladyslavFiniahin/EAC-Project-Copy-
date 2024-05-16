@@ -8,7 +8,7 @@ class Home extends Component {
   render() {
     const iconStates = JSON.parse(localStorage.getItem('iconStates')) || [];
     const clickCount = iconStates.filter(state => state).length;
-    const progress = Math.min((clickCount / 18) * 100, 100); // Припускаємо, що у нас 18 іконок
+    const progress = Math.min((clickCount / 18) * 100, 100);
 
     const handleImageClick = (index) => {
       const newIconStates = [...iconStates];

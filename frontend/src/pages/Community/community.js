@@ -7,6 +7,7 @@ class Community extends Component {
     this.state = {
       username: '',
       userData: null,
+      friendsList: [], // Додали новий стан для збереження списку друзів
     };
   }
 
@@ -19,19 +20,31 @@ class Community extends Component {
     const { username } = this.state;
     try {
       const response = await fetch(`/api/users?username=${username}`);
-    
       const users = await response.json();
-
       const filteredUser = users.find(user => user.username === username);
-
       this.setState({ userData: filteredUser });
     } catch (error) {
       console.error('Error:', error);
     }
   };
 
+  // Метод для додавання користувача до списку друзів
+  addToFriends = async () => {
+    const { userData, friendsList } = this.state;
+    if (!friendsList.includes(userData)) {
+      this.setState({ friendsList: [...friendsList, userData] });
+    }
+  };
+
+  // Метод для видалення користувача зі списку друзів
+  removeFromFriends = async () => {
+    const { userData, friendsList } = this.state;
+    const updatedList = friendsList.filter(user => user !== userData);
+    this.setState({ friendsList: updatedList });
+  };
+
   render() {
-    const { userData } = this.state;
+    const { userData, friendsList } = this.state;
     return (
       <>
         <header>
@@ -65,7 +78,12 @@ class Community extends Component {
                   <img src='./img/User35x35.png' alt='' className='usr1'/>
                   <div className='contoflist'>
                     <div className='tupo'>{userData.username} average emissions <br/> are reduced by <span>0%</span></div>
-                      <div className='add'>+</div>
+                    {}
+                    {friendsList.includes(userData) ? (
+                      <div className='add' onClick={this.removeFromFriends}>-</div>
+                    ) : (
+                      <div className='add' onClick={this.addToFriends}>+</div>
+                    )}
                   </div>
                 </div>
               </div>

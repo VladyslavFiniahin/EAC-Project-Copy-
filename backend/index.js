@@ -5,45 +5,51 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 app.use(express.json());
 
-const mongo_uri = 'mongodb+srv://Vladyslav:dbvlad0383@cluster0.bqbfotd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'; // Вставте вашу URL бази даних
+const mongo_uri = ''; // Сюда url бази даних
 
 app.listen(PORT, () => {
-    console.log(`Server starting on port ${PORT}`);
+  console.log(`Server starting on port ${PORT}`);
 });
 
 app.post('/api/create_user', async (req, res) => {
-    const newUser = {
-        username: req.body.username,
-        email: req.body.email,
-        password: req.body.password
-    };
+  console.log('Received body:', req.body);
 
-    try {
-        const client = new MongoClient(mongo_uri);
-        await client.connect();
+  const { username, email, password } = req.body;
 
-        const db = client.db();
+  if (!username || !email || !password) {
+    console.log('Missing required fields');
+    return res.status(400).json({ error: "Missing required fields" });
+  }
 
-        const usersCollection = db.collection('users');
+  const newUser = { username, email, password };
 
-        const existingUser = await usersCollection.findOne({ $or: [{ username: newUser.username }, { email: newUser.email }] });
-        if (existingUser) {
-            await client.close();
-            return res.status(400).json({ error: "User with this username or email already exists" });
-        }
+  try {
+    const client = new MongoClient(mongo_uri);
+    await client.connect();
 
-        const result = await usersCollection.insertOne(newUser);
-        await client.close();
+    const db = client.db();
+    const usersCollection = db.collection('users');
 
-        res.json({
-            message: "User created successfully",
-            user: { _id: result.insertedId, ...newUser }
-        });
-    } catch (error) {
-        console.error("Error:", error);
-        res.status(500).json({ error: "Internal server error" });
+    const existingUser = await usersCollection.findOne({ $or: [{ username: newUser.username }, { email: newUser.email }] });
+    if (existingUser) {
+      await client.close();
+      console.log('User already exists');
+      return res.status(400).json({ error: "User with this username or email already exists" });
     }
+
+    const result = await usersCollection.insertOne(newUser);
+    await client.close();
+
+    res.json({
+      message: "User created successfully",
+      user: { _id: result.insertedId, ...newUser }
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
+
 
 app.get('/api/users', async (req, res) => {
     try {
@@ -95,3 +101,58 @@ app.post('/api/login', async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 });
+
+// Імпорти та підключення MongoDB залишаються тими ж самими
+
+app.post('/api/add_friend', async (req, res) => {
+    const { userId, friendId } = req.body;
+  
+    if (!userId || !friendId) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+  
+    try {
+      const client = new MongoClient(mongo_uri);
+      await client.connect();
+  
+      const db = client.db();
+      const usersCollection = db.collection('users');
+  
+      await usersCollection.updateOne(
+        { _id: new MongoClient.ObjectId(userId) },
+        { $addToSet: { friends: friendId } }
+      );
+  
+      await client.close();
+      res.json({ message: "Friend added successfully" });
+    } catch (error) {
+      console.error("Error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+  
+  app.get('/api/user_friends', async (req, res) => {
+    const { userId } = req.query;
+  
+    if (!userId) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+  
+    try {
+      const client = new MongoClient(mongo_uri);
+      await client.connect();
+  
+      const db = client.db();
+      const usersCollection = db.collection('users');
+  
+      const user = await usersCollection.findOne({ _id: new MongoClient.ObjectId(userId) });
+      const friends = user.friends || [];
+  
+      await client.close();
+      res.json(friends);
+    } catch (error) {
+      console.error("Error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+  
