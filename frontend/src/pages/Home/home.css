@@ -11,11 +11,12 @@ header {
     margin: 9px;
 }
 
-.circle {
-    position: relative;
-    top: -30px;
-    text-align: center;
-    color: whitesmoke;
+.CircularProgressbar{
+    position: relative; 
+margin-left: 115px;
+margin-top: 20px;
+text-align: center;
+
 }
 
 a.text:active,
@@ -26,6 +27,18 @@ a.text {
   transition: opacity 500ms ease;
 }
 
+.CircularProgressbar-path {
+  stroke: red;
+}
+.CircularProgressbar-trail {
+  stroke: gray;
+}
+.CircularProgressbar-text {
+  fill: yellow;
+}
+.CircularProgressbar-background {
+  fill: green;
+}
 .bg-of-elem {
     position: relative;
     bottom: 30px;
@@ -37,7 +50,8 @@ a.text {
     justify-content: center;
     height: 430px;
     width: 80%;
-    margin-top: 25px;
+    margin-top: 95px;
+    
 }
 
 .section {

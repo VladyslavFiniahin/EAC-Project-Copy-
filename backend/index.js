@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 app.use(express.json());
 
-const mongo_uri = 'mongodb+srv://Vladyslav:<ваш пароль>@cluster0.bqbfotd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'; // Сюда вставляйте свою url бази даних
+const mongo_uri = 'mongodb+srv://Vladyslav:dbvlad0383@cluster0.bqbfotd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'; // Вставте вашу URL бази даних
 
 app.listen(PORT, () => {
     console.log(`Server starting on port ${PORT}`);
@@ -19,7 +19,7 @@ app.post('/api/create_user', async (req, res) => {
     };
 
     try {
-        const client = new MongoClient(mongo_uri, { useNewUrlParser: true, useUnifiedTopology: true });
+        const client = new MongoClient(mongo_uri);
         await client.connect();
 
         const db = client.db();
@@ -28,16 +28,16 @@ app.post('/api/create_user', async (req, res) => {
 
         const existingUser = await usersCollection.findOne({ $or: [{ username: newUser.username }, { email: newUser.email }] });
         if (existingUser) {
-            client.close();
+            await client.close();
             return res.status(400).json({ error: "User with this username or email already exists" });
         }
 
         const result = await usersCollection.insertOne(newUser);
-        client.close();
+        await client.close();
 
         res.json({
             message: "User created successfully",
-            user: result.ops[0]
+            user: { _id: result.insertedId, ...newUser }
         });
     } catch (error) {
         console.error("Error:", error);
@@ -47,7 +47,7 @@ app.post('/api/create_user', async (req, res) => {
 
 app.get('/api/users', async (req, res) => {
     try {
-        const client = new MongoClient(mongo_uri, { useNewUrlParser: true, useUnifiedTopology: true });
+        const client = new MongoClient(mongo_uri);
         await client.connect();
 
         const db = client.db();
@@ -55,7 +55,7 @@ app.get('/api/users', async (req, res) => {
         const usersCollection = db.collection('users');
 
         const users = await usersCollection.find({}).toArray();
-        client.close();
+        await client.close();
 
         res.json(users);
     } catch (error) {
@@ -68,18 +68,18 @@ app.post('/api/login', async (req, res) => {
     const { usernameOrEmail, password } = req.body;
 
     try {
-        const client = new MongoClient(mongo_uri, { useNewUrlParser: true, useUnifiedTopology: true });
+        const client = new MongoClient(mongo_uri);
         await client.connect();
 
         const db = client.db();
 
         const usersCollection = db.collection('users');
 
-        const user = await usersCollection.findOne({ $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }], password });
+        const user = await usersCollection.findOne({ $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }] });
 
-        client.close();
+        await client.close();
 
-        if (!user) {
+        if (!user || user.password !== password) {
             return res.status(400).json({ error: "Invalid username or password" });
         }
 
