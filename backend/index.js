@@ -17,7 +17,7 @@ app.post('/api/create_user', async (req, res) => {
   const { username, email, password } = req.body;
 
   if (!username || !email || !password) {
-    return res.status(400).json({ error: "Відсутні необхідні поля" });
+    return res.status(400).json({ error: "Missing required fields" });
   }
 
   const newUser = { username, email, password };
@@ -32,19 +32,19 @@ app.post('/api/create_user', async (req, res) => {
     const existingUser = await usersCollection.findOne({ $or: [{ username: newUser.username }, { email: newUser.email }] });
     if (existingUser) {
       await client.close();
-      return res.status(400).json({ error: "Користувач з таким іменем або email вже існує" });
+      return res.status(400).json({ error: "User with this username or email already exists" });
     }
 
     const result = await usersCollection.insertOne(newUser);
     await client.close();
 
     res.json({
-      message: "Користувача успішно створено",
+      message: "User created successfully",
       user: { _id: result.insertedId, ...newUser }
     });
   } catch (error) {
     console.error("Error:", error);
-    res.status(500).json({ error: "Внутрішня помилка сервера" });
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
