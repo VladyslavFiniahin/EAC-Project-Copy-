@@ -1,24 +1,23 @@
 const express = require('express');
+const cors = require('cors');
 const { MongoClient } = require('mongodb');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
+app.use(cors());
 app.use(express.json());
 
-const mongo_uri = ''; // Сюда url бази даних
+const mongo_uri = 'mongodb+srv://Ecz:timagandony@cluster0.1u67hr9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 
 app.listen(PORT, () => {
   console.log(`Server starting on port ${PORT}`);
 });
 
 app.post('/api/create_user', async (req, res) => {
-  console.log('Received body:', req.body);
-
   const { username, email, password } = req.body;
 
   if (!username || !email || !password) {
-    console.log('Missing required fields');
-    return res.status(400).json({ error: "Missing required fields" });
+    return res.status(400).json({ error: "Відсутні необхідні поля" });
   }
 
   const newUser = { username, email, password };
@@ -27,28 +26,29 @@ app.post('/api/create_user', async (req, res) => {
     const client = new MongoClient(mongo_uri);
     await client.connect();
 
-    const db = client.db();
+    const db = client.db('test');
     const usersCollection = db.collection('users');
 
     const existingUser = await usersCollection.findOne({ $or: [{ username: newUser.username }, { email: newUser.email }] });
     if (existingUser) {
       await client.close();
-      console.log('User already exists');
-      return res.status(400).json({ error: "User with this username or email already exists" });
+      return res.status(400).json({ error: "Користувач з таким іменем або email вже існує" });
     }
 
     const result = await usersCollection.insertOne(newUser);
     await client.close();
 
     res.json({
-      message: "User created successfully",
+      message: "Користувача успішно створено",
       user: { _id: result.insertedId, ...newUser }
     });
   } catch (error) {
     console.error("Error:", error);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: "Внутрішня помилка сервера" });
   }
 });
+
+
 
 
 app.get('/api/users', async (req, res) => {
@@ -56,7 +56,7 @@ app.get('/api/users', async (req, res) => {
         const client = new MongoClient(mongo_uri);
         await client.connect();
 
-        const db = client.db();
+        const db = client.db('test');
 
         const usersCollection = db.collection('users');
 
@@ -77,7 +77,7 @@ app.post('/api/login', async (req, res) => {
         const client = new MongoClient(mongo_uri);
         await client.connect();
 
-        const db = client.db();
+        const db = client.db('test');
 
         const usersCollection = db.collection('users');
 
@@ -115,7 +115,7 @@ app.post('/api/add_friend', async (req, res) => {
       const client = new MongoClient(mongo_uri);
       await client.connect();
   
-      const db = client.db();
+      const db = client.db('test');
       const usersCollection = db.collection('users');
   
       await usersCollection.updateOne(
@@ -142,7 +142,7 @@ app.post('/api/add_friend', async (req, res) => {
       const client = new MongoClient(mongo_uri);
       await client.connect();
   
-      const db = client.db();
+      const db = client.db('test');
       const usersCollection = db.collection('users');
   
       const user = await usersCollection.findOne({ _id: new MongoClient.ObjectId(userId) });
