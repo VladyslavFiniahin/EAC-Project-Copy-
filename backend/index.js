@@ -7,7 +7,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const mongo_uri = 'mongodb+srv://Ecz:timagandony@cluster0.1u67hr9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+const mongo_uri = 'mongodb+srv://Vladyslav:dbvlad0383@cluster0.bqbfotd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 
 app.listen(PORT, () => {
   console.log(`Server starting on port ${PORT}`);
@@ -20,7 +20,7 @@ app.post('/api/create_user', async (req, res) => {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
-  const newUser = { username, email, password };
+  const newUser = { username, email, password, friends: [] };
 
   try {
     const client = new MongoClient(mongo_uri);
@@ -48,111 +48,138 @@ app.post('/api/create_user', async (req, res) => {
   }
 });
 
-
-
-
 app.get('/api/users', async (req, res) => {
-    try {
-        const client = new MongoClient(mongo_uri);
-        await client.connect();
+  try {
+    const client = new MongoClient(mongo_uri);
+    await client.connect();
 
-        const db = client.db('test');
+    const db = client.db('test');
+    const usersCollection = db.collection('users');
 
-        const usersCollection = db.collection('users');
+    const users = await usersCollection.find({}).toArray();
+    await client.close();
 
-        const users = await usersCollection.find({}).toArray();
-        await client.close();
-
-        res.json(users);
-    } catch (error) {
-        console.error("Error:", error);
-        res.status(500).json({ error: "Internal server error" });
-    }
+    res.json(users);
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
 
 app.post('/api/login', async (req, res) => {
-    const { usernameOrEmail, password } = req.body;
+  const { usernameOrEmail, password } = req.body;
 
-    try {
-        const client = new MongoClient(mongo_uri);
-        await client.connect();
+  try {
+    const client = new MongoClient(mongo_uri);
+    await client.connect();
 
-        const db = client.db('test');
+    const db = client.db('test');
+    const usersCollection = db.collection('users');
 
-        const usersCollection = db.collection('users');
+    const user = await usersCollection.findOne({ $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }] });
 
-        const user = await usersCollection.findOne({ $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }] });
+    await client.close();
 
-        await client.close();
-
-        if (!user || user.password !== password) {
-            return res.status(400).json({ error: "Invalid username or password" });
-        }
-
-        res.json({
-            message: "Login successful",
-            user: {
-                username: user.username,
-                email: user.email
-            }
-        });
-    } catch (error) {
-        console.error("Error:", error);
-        res.status(500).json({ error: "Internal server error" });
+    if (!user || user.password !== password) {
+      return res.status(400).json({ error: "Invalid username or password" });
     }
+
+    res.json({
+      message: "Login successful",
+      user: {
+        username: user.username,
+        email: user.email
+      }
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
 
-// Імпорти та підключення MongoDB залишаються тими ж самими
-
 app.post('/api/add_friend', async (req, res) => {
-    const { userId, friendId } = req.body;
-  
-    if (!userId || !friendId) {
-      return res.status(400).json({ error: "Missing required fields" });
-    }
-  
-    try {
-      const client = new MongoClient(mongo_uri);
-      await client.connect();
-  
-      const db = client.db('test');
-      const usersCollection = db.collection('users');
-  
-      await usersCollection.updateOne(
-        { _id: new MongoClient.ObjectId(userId) },
-        { $addToSet: { friends: friendId } }
-      );
-  
+  const { loggedInUsername, friendUsername } = req.body;
+
+  if (!loggedInUsername || !friendUsername) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  try {
+    const client = new MongoClient(mongo_uri);
+    await client.connect();
+
+    const db = client.db('test');
+    const usersCollection = db.collection('users');
+
+    await usersCollection.updateOne(
+      { username: loggedInUsername },
+      { $addToSet: { friends: friendUsername } }
+    );
+
+    await client.close();
+    res.json({ message: "Friend added successfully" });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
+
+app.delete('/api/remove_friend', async (req, res) => {
+  const { username, friendUsername } = req.query;
+
+  if (!username || !friendUsername) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  try {
+    const client = new MongoClient(mongo_uri);
+    await client.connect();
+
+    const db = client.db('test');
+    const usersCollection = db.collection('users');
+
+    await usersCollection.updateOne(
+      { username: username },
+      { $pull: { friends: friendUsername } }
+    );
+
+    await client.close();
+    res.json({ message: "Friend removed successfully" });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
+app.get('/api/user_friends', async (req, res) => {
+  const { username } = req.query;
+
+  if (!username) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  try {
+    const client = new MongoClient(mongo_uri);
+    await client.connect();
+
+    const db = client.db('test');
+    const usersCollection = db.collection('users');
+
+    const user = await usersCollection.findOne({ username: username });
+    if (!user) {
       await client.close();
-      res.json({ message: "Friend added successfully" });
-    } catch (error) {
-      console.error("Error:", error);
-      res.status(500).json({ error: "Internal server error" });
+      return res.status(404).json({ error: "User not found" });
     }
-  });
-  
-  app.get('/api/user_friends', async (req, res) => {
-    const { userId } = req.query;
-  
-    if (!userId) {
-      return res.status(400).json({ error: "Missing required fields" });
-    }
-  
-    try {
-      const client = new MongoClient(mongo_uri);
-      await client.connect();
-  
-      const db = client.db('test');
-      const usersCollection = db.collection('users');
-  
-      const user = await usersCollection.findOne({ _id: new MongoClient.ObjectId(userId) });
-      const friends = user.friends || [];
-  
-      await client.close();
-      res.json(friends);
-    } catch (error) {
-      console.error("Error:", error);
-      res.status(500).json({ error: "Internal server error" });
-    }
-  });
-  
+
+    const friends = await usersCollection.find({ username: { $in: user.friends || [] } }).toArray();
+
+    await client.close();
+    res.json(friends);
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});

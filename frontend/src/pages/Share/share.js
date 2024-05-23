@@ -5,7 +5,7 @@ export class Share extends Component {
   render() {
     return (
 <>
-      <body>
+
 
       <header>
         <a href="/accaunt-settings" className='text'><img src='./img/UserPhotoS.png' alt='' className='profile-settings'/></a>
@@ -47,7 +47,7 @@ export class Share extends Component {
 
 
 
-</body>
+
 </>
     )
   }

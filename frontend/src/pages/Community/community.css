@@ -41,10 +41,15 @@
 }
 
 .inp-search {
+  position: relative;
+  top: 10px;
   padding-bottom: 0;
   margin-bottom: 0;
   border: none;
   font-size: 16px;
+  >input {
+    border: none;
+  }
 }
 
 .btac {
@@ -139,6 +144,30 @@
   font-weight: 1000;
   transition: transform 500ms ease;
 }
+
+.bg-current-friends {
+  padding-top: 20px;
+  padding-left: 15px;
+}
+
+.tupo- {
+  position: relative;
+  left: 10px;
+  > span {
+    color: #1cc738;
+  }
+}
+
+.list- {
+  font-size: 21px;
+}
+
+.usr1- {
+  padding-right: 5px;
+  padding-top: 7px;
+  height: 35px;
+}
+
 
 footer {
   display: flex;

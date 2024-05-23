@@ -7,9 +7,42 @@ class Community extends Component {
     this.state = {
       username: '',
       userData: null,
-      friendsList: [], // Додали новий стан для збереження списку друзів
+      friendsList: [],
+      currentFriends: [],
     };
   }
+
+  componentDidMount() {
+    const loggedInUsername = localStorage.getItem('loggedInUsername');
+    if (loggedInUsername) {
+      this.setState({ username: loggedInUsername }, () => {
+        this.fetchFriends();
+        this.fetchCurrentFriends();
+      });
+    }
+  }
+
+  fetchFriends = async () => {
+    const { username } = this.state;
+    try {
+      const response = await fetch(`/api/user_friends?username=${username}`);
+      const friendsList = await response.json();
+      this.setState({ friendsList });
+    } catch (error) {
+      console.error('Error fetching friends:', error);
+    }
+  };
+
+  fetchCurrentFriends = async () => {
+    const loggedInUsername = localStorage.getItem('loggedInUsername');
+    try {
+      const response = await fetch(`/api/user_friends?username=${loggedInUsername}`);
+      const currentFriends = await response.json();
+      this.setState({ currentFriends });
+    } catch (error) {
+      console.error('Error fetching current friends:', error);
+    }
+  };
 
   handleChange = (e) => {
     this.setState({ username: e.target.value });
@@ -19,7 +52,7 @@ class Community extends Component {
     e.preventDefault();
     const { username } = this.state;
     try {
-      const response = await fetch(`/api/users?username=${username}`);
+      const response = await fetch(`/api/users`);
       const users = await response.json();
       const filteredUser = users.find(user => user.username === username);
       this.setState({ userData: filteredUser });
@@ -28,44 +61,66 @@ class Community extends Component {
     }
   };
 
-  // Метод для додавання користувача до списку друзів
   addToFriends = async () => {
-    const { userData, friendsList } = this.state;
-    if (!friendsList.includes(userData)) {
-      this.setState({ friendsList: [...friendsList, userData] });
+    const loggedInUsername = localStorage.getItem('loggedInUsername');
+    const { userData } = this.state;
+    if (userData && loggedInUsername) {
+      try {
+        await fetch('/api/add_friend', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ loggedInUsername, friendUsername: userData.username }),
+        });
+        this.setState(prevState => ({
+          friendsList: [...prevState.friendsList, { username: userData.username }]
+        }), this.fetchCurrentFriends);
+      } catch (error) {
+        console.error('Error adding friend:', error);
+      }
     }
   };
 
-  // Метод для видалення користувача зі списку друзів
   removeFromFriends = async () => {
-    const { userData, friendsList } = this.state;
-    const updatedList = friendsList.filter(user => user !== userData);
-    this.setState({ friendsList: updatedList });
+    const loggedInUsername = localStorage.getItem('loggedInUsername');
+    const { userData } = this.state;
+    if (userData && loggedInUsername) {
+      try {
+        await fetch(`/api/remove_friend?username=${loggedInUsername}&friendUsername=${userData.username}`, {
+          method: 'DELETE',
+        });
+        this.setState(prevState => ({
+          friendsList: prevState.friendsList.filter(friend => friend.username !== userData.username)
+        }), this.fetchCurrentFriends);
+      } catch (error) {
+        console.error('Error removing friend:', error);
+      }
+    }
   };
+  
 
   render() {
-    const { userData, friendsList } = this.state;
+    const { userData, friendsList, currentFriends } = this.state;
     return (
       <>
         <header>
-          <a href="/accaunt-settings" className='text'><img src='./img/UserPhotoS.png' alt='' className='profile-settings'/></a>
-          <a href="/settings" className='text'><img src='./img/Menu.png' alt='' className='settings'/></a>
+          <a href="/accaunt-settings" className='text'><img src='./img/UserPhotoS.png' alt='' className='profile-settings' /></a>
+          <a href="/settings" className='text'><img src='./img/Menu.png' alt='' className='settings' /></a>
         </header>
 
         <div className='bg-commu'>
           <div className='cont-commu'>
-              <div className='fstr1'>Make new <br/>friends</div>
-              <div className='fstr2'>By adding a new friends to your list, you 
-              <br/>can view their activity during the day</div>
+            <div className='fstr1'>Make new <br />friends</div>
+            <div className='fstr2'>By adding a new friends to your list, you
+              <br />can view their activity during the day</div>
           </div>
         </div>
 
         <div className='bg-search'>
           <div className='cont-search'>
-              <form onSubmit={this.handleSubmit}>
-                <input className='inp-search' type="text" id='3' placeholder="Enter username" onChange={this.handleChange} />
-                <button type="submit" className='btac'><img src='./img/search.png' alt='' className='search12'/></button>
-              </form>
+            <form onSubmit={this.handleSubmit}>
+              <input className='inp-search' type="text" id='3' placeholder="Enter username" onChange={this.handleChange} />
+              <button type="submit" className='btac'><img src='./img/search.png' alt='' className='search12' /></button>
+            </form>
           </div>
         </div>
 
@@ -75,11 +130,10 @@ class Community extends Component {
             {userData && (
               <div key={userData.username}>
                 <div className='bgoflist'>
-                  <img src='./img/User35x35.png' alt='' className='usr1'/>
+                  <img src='./img/User35x35.png' alt='' className='usr1' />
                   <div className='contoflist'>
-                    <div className='tupo'>{userData.username} average emissions <br/> are reduced by <span>0%</span></div>
-                    {}
-                    {friendsList.includes(userData) ? (
+                    <div className='tupo'>{userData.username} average emissions <br /> are reduced by <span>0%</span></div>
+                    {friendsList.some(friend => friend.username === userData.username) ? (
                       <div className='add' onClick={this.removeFromFriends}>-</div>
                     ) : (
                       <div className='add' onClick={this.addToFriends}>+</div>
@@ -88,15 +142,28 @@ class Community extends Component {
                 </div>
               </div>
             )}
+            <div className='bg-current-friends'>
+          <div className='cont-current-friends'>
+            <div className='list-'>Your current friends:</div>
+            {currentFriends.map(friend => (
+              <div key={friend.username} className='bgoflist'>
+                <img src='./img/User35x35.png' alt='' className='usr1-' />
+                <div className='contoflist'>
+                  <div className='tupo-'>{friend.username} average emissions <br /> are reduced by <span>0%</span></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
           </div>
         </div>
 
         <footer>
           <div className='footer77'>
-              <a href="/home" className='text'><img src='./img/Home.png' alt=''/></a>
-              <a href="/share" className='text'><img src='./img/Share.png' alt=''/></a>
-              <a href="/community" className='text'><img src='./img/Community.png' alt=''/></a>
-              <a href="/activity" className='text'><img src='./img/Activity.png' alt=''/></a>
+            <a href="/home" className='text'><img src='./img/Home.png' alt='' /></a>
+            <a href="/share" className='text'><img src='./img/Share.png' alt='' /></a>
+            <a href="/community" className='text'><img src='./img/Community.png' alt='' /></a>
+            <a href="/activity" className='text'><img src='./img/Activity.png' alt='' /></a>
           </div>
         </footer>
       </>
