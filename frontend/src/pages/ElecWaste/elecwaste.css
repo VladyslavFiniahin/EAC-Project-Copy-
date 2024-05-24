@@ -23,10 +23,21 @@
     margin-left: 7px;
 }
 
+.reset {
+  position: relative;
+  height: 25px;
+  font-size: 16px;
+  border: none;
+  left: 20px;
+  bottom: 10px;
+  border-radius: 10px;
+  background-color: #0B3C15;
+}
+
 .text-png {
     margin-left: 85px;
     font-size: 30px;
-    margin-top: 50px;
+    margin-top: 0px;
 }
 
 .penis-1, 

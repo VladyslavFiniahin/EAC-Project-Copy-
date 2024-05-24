@@ -88,6 +88,7 @@ class ElecWaste extends Component {
           <a href="/accaunt-settings" className='text'><img src='./img/UserPhotoS.png' alt='' className='profile-settings'/></a>
           <a href="/settings" className='text'><img src='./img/Menu.png' alt='' className='settings'/></a>
         </header>
+        <button onClick={this.handleResetProgress} className='reset'>Скинути прогрес</button>
 
         <p className='text-png'>Your amount of waste</p>
         <div className='penis'>
@@ -172,8 +173,6 @@ class ElecWaste extends Component {
             <a href="/activity" className='text'><img src='./img/Activity.png' alt=''/></a>
           </div>
         </footer>
-
-        <button onClick={this.handleResetProgress}>Скинути прогрес</button>
       </div>
     );
   }

@@ -6,7 +6,6 @@ export class Share extends Component {
     return (
 <>
 
-
       <header>
         <a href="/accaunt-settings" className='text'><img src='./img/UserPhotoS.png' alt='' className='profile-settings'/></a>
         <a href="/settings" className='text'><img src='./img/Menu.png' alt='' className='settings'/></a>
