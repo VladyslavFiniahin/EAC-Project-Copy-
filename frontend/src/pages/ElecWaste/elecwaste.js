@@ -6,6 +6,7 @@ class ElecWaste extends Component {
     super(props);
     this.state = {
       selectedItems: JSON.parse(localStorage.getItem('selectedItems')) || {},
+      progress: JSON.parse(localStorage.getItem('progress')) || 100,
     };
   }
 
@@ -39,7 +40,7 @@ class ElecWaste extends Component {
     });
   };
 
-  handleImageClick = (event) => {
+  handleImageClick = async (event) => {
     const currentSrc = event.target.src;
     const isLowBattery = currentSrc.includes('LowBattery.png');
     const itemId = event.target.dataset.itemId;
@@ -49,6 +50,35 @@ class ElecWaste extends Component {
       localStorage.setItem('selectedItems', JSON.stringify(selectedItems));
     });
     event.target.src = isLowBattery ? './img/Battery.png' : './img/LowBattery.png';
+
+    if (this.state.progress > 0) {
+      this.setState((prevState) => ({ progress: prevState.progress - 1 }), async () => {
+        localStorage.setItem('progress', JSON.stringify(this.state.progress));
+        await fetch('/api/update_progress', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: localStorage.getItem('loggedInUsername'),
+            progress: this.state.progress,
+          }),
+        });
+      });
+    }
+  };
+
+  handleResetProgress = () => {
+    this.setState({
+      progress: 100,
+      selectedItems: {},
+    });
+    const images = document.querySelectorAll('.balls-1');
+    images.forEach((image) => {
+      image.src = './img/LowBattery.png';
+    });
+    localStorage.setItem('progress', JSON.stringify(100));
+    localStorage.removeItem('selectedItems');
   };
 
   render() {
@@ -142,6 +172,8 @@ class ElecWaste extends Component {
             <a href="/activity" className='text'><img src='./img/Activity.png' alt=''/></a>
           </div>
         </footer>
+
+        <button onClick={this.handleResetProgress}>Скинути прогрес</button>
       </div>
     );
   }

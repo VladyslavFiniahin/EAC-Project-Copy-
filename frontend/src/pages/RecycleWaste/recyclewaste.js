@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import "./recyclewaste.css"
+import React, { Component } from 'react';
+import "./recyclewaste.css";
 
 export class RecycleWaste extends Component {
 
@@ -116,4 +116,4 @@ export class RecycleWaste extends Component {
   }
 }
 
-export default RecycleWaste
+export default RecycleWaste;

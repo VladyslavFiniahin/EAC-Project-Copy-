@@ -3,18 +3,10 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import './home.css';
 
-
 class Home extends Component {
   render() {
-    const iconStates = JSON.parse(localStorage.getItem('iconStates')) || [];
-    const clickCount = iconStates.filter(state => state).length;
-    const progress = Math.min((clickCount / 18) * 100, 100);
-
-    const handleImageClick = (index) => {
-      const newIconStates = [...iconStates];
-      newIconStates[index] = !newIconStates[index];
-      localStorage.setItem('iconStates', JSON.stringify(newIconStates));
-    };
+    const progress = JSON.parse(localStorage.getItem('progress')) || 100;
+    const progress1 = JSON.parse(localStorage.getItem('progress1')) || 100;
 
     return (
       <>

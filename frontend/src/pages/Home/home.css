@@ -37,7 +37,7 @@ a.text {
   fill: yellow;
 }
 .CircularProgressbar-background {
-  fill: green;
+  fill: rgb(24, 163, 24);
 }
 .bg-of-elem {
     position: relative;

@@ -183,3 +183,58 @@ app.get('/api/user_friends', async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+app.post('/api/update_progress', async (req, res) => {
+  const { username, progress } = req.body;
+
+  if (!username || !progress) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  try {
+    const client = new MongoClient(mongo_uri);
+    await client.connect();
+
+    const db = client.db('test');
+    const usersCollection = db.collection('users');
+
+    await usersCollection.updateOne(
+      { username: username },
+      { $set: { progress: progress } }
+    );
+
+    await client.close();
+    res.json({ message: "Progress updated successfully" });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.get('/api/get_progress', async (req, res) => {
+  const { username } = req.query;
+
+  if (!username) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  try {
+    const client = new MongoClient(mongo_uri);
+    await client.connect();
+
+    const db = client.db('test');
+    const usersCollection = db.collection('users');
+
+    const user = await usersCollection.findOne({ username: username });
+    if (!user) {
+      await client.close();
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    await client.close();
+    res.json({ progress: user.progress || 0 });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});

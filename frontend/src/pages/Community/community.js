@@ -38,12 +38,22 @@ class Community extends Component {
     try {
       const response = await fetch(`/api/user_friends?username=${loggedInUsername}`);
       const currentFriends = await response.json();
-      this.setState({ currentFriends });
+      
+      const progressPromises = currentFriends.map(async (friend) => {
+        const progressResponse = await fetch(`/api/get_progress?username=${friend.username}`);
+        const progressData = await progressResponse.json();
+        return { ...friend, progress: progressData.progress };
+      });
+  
+      const friendsWithProgress = await Promise.all(progressPromises);
+  
+      this.setState({ currentFriends: friendsWithProgress });
     } catch (error) {
       console.error('Error fetching current friends:', error);
     }
   };
-
+  
+  
   handleChange = (e) => {
     this.setState({ username: e.target.value });
   };
@@ -106,7 +116,7 @@ class Community extends Component {
           <a href="/accaunt-settings" className='text'><img src='./img/UserPhotoS.png' alt='' className='profile-settings' /></a>
           <a href="/settings" className='text'><img src='./img/Menu.png' alt='' className='settings' /></a>
         </header>
-
+  
         <div className='bg-commu'>
           <div className='cont-commu'>
             <div className='fstr1'>Make new <br />friends</div>
@@ -114,7 +124,7 @@ class Community extends Component {
               <br />can view their activity during the day</div>
           </div>
         </div>
-
+  
         <div className='bg-search'>
           <div className='cont-search'>
             <form onSubmit={this.handleSubmit}>
@@ -123,7 +133,7 @@ class Community extends Component {
             </form>
           </div>
         </div>
-
+  
         <div className='bg-friends'>
           <div className='cont-friends'>
             <div className='list'>Your searched user:</div>
@@ -143,21 +153,21 @@ class Community extends Component {
               </div>
             )}
             <div className='bg-current-friends'>
-          <div className='cont-current-friends'>
-            <div className='list-'>Your current friends:</div>
-            {currentFriends.map(friend => (
-              <div key={friend.username} className='bgoflist'>
-                <img src='./img/User35x35.png' alt='' className='usr1-' />
-                <div className='contoflist'>
-                  <div className='tupo-'>{friend.username} average emissions <br /> are reduced by <span>0%</span></div>
-                </div>
+              <div className='cont-current-friends'>
+                <div className='list-'>Your current friends:</div>
+                {currentFriends.map(friend => (
+                  <div key={friend.username} className='bgoflist'>
+                    <img src='./img/User35x35.png' alt='' className='usr1-' />
+                    <div className='contoflist'>
+                      <div className='tupo-'>{friend.username} average emissions <br /> are reduced by <span>{friend.progress}%</span></div>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </div>
-          </div>
-        </div>
-
+  
         <footer>
           <div className='footer77'>
             <a href="/home" className='text'><img src='./img/Home.png' alt='' /></a>
@@ -169,6 +179,6 @@ class Community extends Component {
       </>
     );
   }
-}
+}  
 
 export default Community;
